@@ -1,0 +1,6 @@
+asgiref==3.8.1
+Django==5.2
+sorl-thumbnail==12.8.0
+sqlparse==0.4.2
+suds-py3==1.4.5.0
+Pillow==10.0.0
