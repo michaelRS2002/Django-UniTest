@@ -36,27 +36,26 @@ class CartTestCase(TestCase):
         self.cart.update_subtotal()
         self.assertEquals(self.cart.subtotal, 0)
 
-    # Prueba cuando un producto tiene cantidad < 0
-    def test_cart_with_negative_quantity(self):
-        
-        CartProducts.objects.create(cart=self.cart, product=self.product1, quantity=-2) # Añadir un producto con cantidad negativa al carrito
-        self.cart.update_subtotal()  # Intentar calcular el subtotal del carrito
-
-        # Verificar el subtotal (debería reflejarse como negativo si no se impide)
-        self.assertEqual(self.cart.subtotal, Decimal('-20.00'), "El sistema permitió un subtotal calculado con cantidad negativa.")
+     # Prueba cuando un producto tiene cantidad < 0
+    def test_subtotal_negative_quantity(self):
+       
+        CartProducts.objects.create(cart=self.cart, product=self.product1, quantity=-3)
+        self.cart.update_subtotal()
+        # Espero que subtotal ≥ 0 
+        self.assertGreaterEqual(self.cart.subtotal, 0 , f"Subtotal es negativo ({self.cart.subtotal}); debería ser al menos 0")
 
     # Prueba cuando un producto tiene precio < 0
-    def test_cart_with_negative_price_product(self):
-        
-        self.assertEqual(self.product3.price, Decimal('-5.00')) # Verificar que el producto con precio negativo fue creado correctamente
-        CartProducts.objects.create(cart=self.cart, product=self.product3, quantity=2)  # Añadir el producto con precio negativo al carrito
-        self.cart.update_subtotal() # Actualizar el subtotal del carrito
-
-        # Verificar que el subtotal del carrito
-        self.assertEqual(self.cart.subtotal, Decimal('-10.00')) # El subtotal del carrito fue calculado incorrectamente con un precio negativo.
+    def test_subtotal_negative_price(self):
+    
+        CartProducts.objects.create(cart=self.cart, product=self.product3, quantity=2)
+        self.cart.update_subtotal()
+        # ¡Aquí esperamos que sea >= 0! 
+        self.assertGreaterEqual(self.cart.subtotal, 0, f"Subtotal es negativo ({self.cart.subtotal}); debería ser al menos 0")
 
 
     
+
+
 
 
 
